@@ -2,10 +2,8 @@ from pathlib import Path
 from pypdf import PdfReader
 
 
-# 프로젝트의 data/raw 폴더
 RAW_DIR = Path(__file__).resolve().parent.parent / "data" / "raw"
 
-# 처리된 텍스트를 저장할 폴더
 PROCESSED_DIR = Path(__file__).resolve().parent.parent / "data" / "processed"
 
 

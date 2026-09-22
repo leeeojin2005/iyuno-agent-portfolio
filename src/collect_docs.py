@@ -3,12 +3,10 @@ import requests
 from bs4 import BeautifulSoup
 
 
-# 프로젝트 폴더의 data/raw
 RAW_DIR = Path(__file__).resolve().parent.parent / "data" / "raw"
 RAW_DIR.mkdir(parents=True, exist_ok=True)
 
 
-# OWASP 공식 Cheat Sheet 문서 20개
 DOCUMENTS = [
     ("Authentication", "https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html"),
     ("Authorization", "https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html"),
@@ -46,13 +44,11 @@ def download_document(name, url):
 
     soup = BeautifulSoup(response.text, "html.parser")
 
-    # 본문에서 불필요한 영역 제거
     for tag in soup(["script", "style", "nav", "footer"]):
         tag.decompose()
 
     text = soup.get_text("\n")
 
-    # 빈 줄 정리
     lines = [line.strip() for line in text.splitlines() if line.strip()]
     clean_text = "\n".join(lines)
 

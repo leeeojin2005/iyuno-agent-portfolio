@@ -2,10 +2,8 @@ from pathlib import Path
 import json
 
 
-# 프로젝트의 data/raw 폴더
 RAW_DIR = Path(__file__).resolve().parent.parent / "data" / "raw"
 
-# Chunk를 저장할 폴더
 PROCESSED_DIR = Path(__file__).resolve().parent.parent / "data" / "processed"
 
 
@@ -14,7 +12,6 @@ def create_chunks(text, chunk_size=800, overlap=100):
 
     chunks = []
 
-    # 불필요한 공백 정리
     text = text.replace("\r", " ").replace("\n", " ").strip()
 
     start = 0
@@ -28,7 +25,6 @@ def create_chunks(text, chunk_size=800, overlap=100):
         if chunk_text:
             chunks.append(chunk_text)
 
-        # 다음 chunk는 100자 겹치게 시작
         start += chunk_size - overlap
 
     return chunks
@@ -36,10 +32,8 @@ def create_chunks(text, chunk_size=800, overlap=100):
 
 if __name__ == "__main__":
 
-    # processed 폴더가 없으면 생성
     PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
 
-    # raw 폴더의 txt 파일 찾기
     txt_files = list(RAW_DIR.glob("*.txt"))
 
     print(f"찾은 문서 수: {len(txt_files)}")
@@ -63,7 +57,6 @@ if __name__ == "__main__":
                 "text": chunk
             })
 
-    # JSON 파일로 저장
     output_path = PROCESSED_DIR / "chunks.json"
 
     with open(output_path, "w", encoding="utf-8") as f:

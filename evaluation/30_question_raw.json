@@ -1,0 +1,478 @@
+[
+  {
+    "id": "Q01",
+    "question": "SQL Injection을 방지하려면 어떻게 해야 해?",
+    "expected_source": "SQL_Injection_Prevention.txt",
+    "retrieved_sources": [
+      "SQL_Injection_Prevention.txt",
+      "SQL_Injection_Prevention.txt",
+      "Query_Parameterization.txt"
+    ],
+    "recall_at_3": true,
+    "citation_supported": true,
+    "calculator_correct": null,
+    "latency_seconds": 60.031,
+    "answer": "SQL Injection(SQL 삽입 공격)을 방지하기 위해서는 OWASP 지침에 따라 다음과 같은 보안 대책을 적용해야 합니다.\n\n1. **문자열 연결을 통한 동적 쿼리 작성 금지**\n   * 사용자 입력값을 문자열 결합(String Concatenation) 방식으로 SQL 쿼리에 직접 이어 붙여 작성하면 안 됩니다.\n\n2. **쿼리 매개변수화(Query Parameterization) 및 바인드 변수 사용**\n   * **바인드 변수(Bind Variables)**를 사용하는 매개변수화된 쿼리를 작성해야 합니다. 이렇게 하면 사용자 입력값이 SQL 명령어로 해석되지 않고 데이터로만 처리되어 안전합니다.\n   * **저장 프로시저(Stored Procedure)**를 사용할 때도 내부에서 동적으로 SQL을 생성한다면 바인드 변수를 사용하여 매개변수화해야 합니다. (동적 SQL을 사용하지 않는 일반적인 저장 프로시저의 매개변수는 자연스럽게 바인딩되어 안전합니다.)\n\n3. **허용 목록(Allow-list) 기반 입력값 검증**\n   * 바인드 변수를 사용할 수 없는 특수한 상황에서는 주요 방어책으로, 일반적인 상황에서는 보조 방어책으로 **허용 목록 기반의 입력 검증(Allow-list Input Validation)**을 수행하여 비정상적인 입력이 SQL 쿼리로 전달되기 전에 차단합니다.\n\n---\n\n**[출처 OWASP 문서]**\n* SQL_Injection_Prevention.txt\n* Query_Parameterization.txt",
+    "error": null
+  },
+  {
+    "id": "Q02",
+    "question": "Parameterized Query가 왜 중요한가요?",
+    "expected_source": "Query_Parameterization.txt",
+    "retrieved_sources": [
+      "Query_Parameterization.txt",
+      "Query_Parameterization.txt",
+      "SQL_Injection_Prevention.txt"
+    ],
+    "recall_at_3": true,
+    "citation_supported": false,
+    "calculator_correct": null,
+    "latency_seconds": 13.882,
+    "answer": "**Parameterized Query(매개변수화된 질의)**가 중요한 가장 큰 이유는 **SQL 인젝션(SQL Injection) 공격을 방지하는 가장 효과적인 방법**이기 때문입니다.\n\n---\n\n### 주요 중요성 및 작동 원리\n\n1. **SQL 코드와 데이터의 완벽한 분리**\n   * 일반적인 쿼리 작성 방식은 사용자 입력값을 SQL 명령문 문자열에 직접 이어 붙입니다. 이 경우 입력값에 악의적인 SQL 구문이 들어가면 쿼리 구조 자체가 변형됩니다.\n   * Parameterized Query(Prepared Statement)를 사용하면 데이터베이스가 **SQL 명령어(코드)**를 먼저 컴파일한 후, 사용자 입력값은 단순한 **'데이터'**로만 처리합니다.\n\n2. **악의적인 명령어 실행 차단**\n   * 입력값에 SQL 제어 문자(예: `' OR '1'='1`)가 포함되어 있더라도, 데이터베이스는 이를 실행 가능한 코드가 아닌 **일반 문자열 데이터**로 인식하므로 공격이 성립하지 않습니다.\n\n---\n\n### 간단한 예시 비교\n\n* **취약한 방식 (문자열 결합)**\n  ```sql\n  -- 사용자 입력값(userInput)이 \"' OR '1'='1\" 일 경우\n  SELECT * FROM users WHERE id = '' OR '1'='1' AND password = '';\n  -- 결과: 로그인 검증을 우회하여 모든 사용자 정보가 노출됨\n  ```\n\n* **안전한 방식 (Parameterized Query)**\n  ```sql\n  -- 쿼리 틀을 먼저 정의\n  SELECT * FROM users WHERE id = ? AND password = ?;\n  -- 입력값 \"' OR '1'='1\" 은 단지 id라는 문자열 자체로 검색됨\n  ```\n\n---\n\n### OWASP 관련 출처\n* **OWASP Top 10 (A03:2021 – Injection):** 인젝션 취약점은 웹 애플리케이션의 주요 보안 위협 중 하나입니다.\n* **OWASP SQL Injection Prevention Cheat Sheet:** SQL 인젝션을 방지하기 위한 **제1방어선(Primary Defense)**으로 Parameterized Query(Prepared Statements) 사용을 강력히 권장하고 있습니다.",
+    "error": null
+  },
+  {
+    "id": "Q03",
+    "question": "SQL 쿼리에 사용자 입력값을 직접 연결하면 왜 위험한가요?",
+    "expected_source": "SQL_Injection_Prevention.txt",
+    "retrieved_sources": [
+      "SQL_Injection_Prevention.txt",
+      "Query_Parameterization.txt",
+      "SQL_Injection_Prevention.txt"
+    ],
+    "recall_at_3": true,
+    "citation_supported": false,
+    "calculator_correct": null,
+    "latency_seconds": 93.654,
+    "answer": "Gemini API 실행 중 오류가 발생했습니다.\n\n오류 종류: RateLimitError\n\n오류 내용: Error code: 429 - {'error': {'message': 'Rate limit exceeded for model gemini-3.6-flash (limit: 20 requests per day on Free Tier). Please retry in 59s or upgrade your tier at https://ai.dev/rate-limit.', 'code': 'too_many_requests'}}",
+    "error": null
+  },
+  {
+    "id": "Q04",
+    "question": "XSS 공격을 방지하려면 어떻게 해야 하나요?",
+    "expected_source": "Cross_Site_Scripting.txt",
+    "retrieved_sources": [
+      "Cross_Site_Scripting.txt",
+      "JSON_Web_Token.txt",
+      "HTTP_Headers.txt"
+    ],
+    "recall_at_3": true,
+    "citation_supported": false,
+    "calculator_correct": null,
+    "latency_seconds": 179.025,
+    "answer": "Gemini API 실행 중 오류가 발생했습니다.\n\n오류 종류: RateLimitError\n\n오류 내용: Error code: 429 - {'error': {'message': 'Rate limit exceeded for model gemini-3.6-flash (limit: 20 requests per day on Free Tier). Please retry later or upgrade your tier at https://ai.dev/rate-limit.', 'code': 'too_many_requests'}}",
+    "error": null
+  },
+  {
+    "id": "Q05",
+    "question": "Stored XSS와 Reflected XSS의 차이는 무엇인가요?",
+    "expected_source": "Cross_Site_Scripting.txt",
+    "retrieved_sources": [
+      "Cross_Site_Scripting.txt",
+      "Cross_Site_Scripting.txt",
+      "Input_Validation.txt"
+    ],
+    "recall_at_3": true,
+    "citation_supported": true,
+    "calculator_correct": null,
+    "latency_seconds": 133.853,
+    "answer": "제공된 OWASP 검색 결과에는 **Stored XSS**와 **Reflected XSS**의 구체적인 정의 및 차이점에 대한 설명이 포함되어 있지 않습니다. \n\n다만, 제공된 OWASP 문서에서는 XSS(Cross Site Scripting) 공격을 방지하기 위한 핵심 원칙과 방어 기법에 대해 다음과 같이 설명하고 있습니다.\n\n### OWASP 문서 기반 XSS 방어 핵심 내용\n1. **출력 인코딩 (Output Encoding)**\n   * 신뢰할 수 없는 입력을 사용자 브라우저에 출력할 때, 코드로 실행되지 않고 단순 데이터로 표시되도록 변환합니다.\n   * *예시:* HTML 문맥에서 `<script>` 태그를 `&lt;script&gt;`로 변환하여 실행을 막습니다.\n\n2. **문맥에 맞는 인코딩 (Context-Specific Encoding)**\n   * 데이터가 들어가는 위치(HTML Body, JavaScript, CSS 등)에 따라 적절한 인코딩 방식을 적용해야 합니다.\n   * CSS 문맥이나 inline CSS 변수 삽입 시 인코딩 규칙을 준수해야 합니다.\n   * JSON 응답 시 `Content-Type` 헤더를 `text/html`이 아닌 `application/json`으로 설정하여 XSS를 방지합니다.\n\n3. **DOM 기반 XSS (DOM XSS)**\n   * `document.location.hash`와 같이 브라우저(DOM) 상에서 신뢰할 수 없는 입력을 다룰 때 적절한 인코딩 및 검증을 수행해야 합니다.\n\n---\n\n**[참고 출처]**\n* `Cross_Site_Scripting.txt`\n* `Input_Validation.txt`",
+    "error": null
+  },
+  {
+    "id": "Q06",
+    "question": "XSS 방지를 위한 출력 인코딩은 왜 필요한가요?",
+    "expected_source": "Cross_Site_Scripting.txt",
+    "retrieved_sources": [
+      "JSON_Web_Token.txt",
+      "Cross_Site_Scripting.txt",
+      "Cross_Site_Scripting.txt"
+    ],
+    "recall_at_3": true,
+    "citation_supported": false,
+    "calculator_correct": null,
+    "latency_seconds": 166.387,
+    "answer": "Gemini API 실행 중 오류가 발생했습니다.\n\n오류 종류: RateLimitError\n\n오류 내용: Error code: 429 - {'error': {'message': 'Rate limit exceeded for model gemini-3.6-flash (limit: 20 requests per day on Free Tier). Please retry in 59s or upgrade your tier at https://ai.dev/rate-limit.', 'code': 'too_many_requests'}}",
+    "error": null
+  },
+  {
+    "id": "Q07",
+    "question": "CSRF 공격을 방어하려면 어떻게 해야 하나요?",
+    "expected_source": "Cross_Site_Request_Forgery.txt",
+    "retrieved_sources": [
+      "Cross_Site_Request_Forgery.txt",
+      "Cross_Site_Request_Forgery.txt",
+      "Cross_Site_Request_Forgery.txt"
+    ],
+    "recall_at_3": true,
+    "citation_supported": false,
+    "calculator_correct": null,
+    "latency_seconds": 149.864,
+    "answer": "Gemini API 실행 중 오류가 발생했습니다.\n\n오류 종류: RateLimitError\n\n오류 내용: Error code: 429 - {'error': {'message': 'Rate limit exceeded for model gemini-3.6-flash (limit: 20 requests per day on Free Tier). Please retry in 29s or upgrade your tier at https://ai.dev/rate-limit.', 'code': 'too_many_requests'}}",
+    "error": null
+  },
+  {
+    "id": "Q08",
+    "question": "CSRF Token은 어떤 역할을 하나요?",
+    "expected_source": "Cross_Site_Request_Forgery.txt",
+    "retrieved_sources": [
+      "Cross_Site_Request_Forgery.txt",
+      "Cross_Site_Request_Forgery.txt",
+      "Cross_Site_Request_Forgery.txt"
+    ],
+    "recall_at_3": true,
+    "citation_supported": false,
+    "calculator_correct": null,
+    "latency_seconds": 155.162,
+    "answer": "Gemini API 실행 중 오류가 발생했습니다.\n\n오류 종류: RateLimitError\n\n오류 내용: Error code: 429 - {'error': {'message': 'Rate limit exceeded for model gemini-3.6-flash (limit: 20 requests per day on Free Tier). Please retry in 53s or upgrade your tier at https://ai.dev/rate-limit.', 'code': 'too_many_requests'}}",
+    "error": null
+  },
+  {
+    "id": "Q09",
+    "question": "CSRF와 XSS의 차이는 무엇인가요?",
+    "expected_source": "Cross_Site_Request_Forgery.txt",
+    "retrieved_sources": [
+      "Cross_Site_Request_Forgery.txt",
+      "Cross_Site_Request_Forgery.txt",
+      "Cross_Site_Request_Forgery.txt"
+    ],
+    "recall_at_3": true,
+    "citation_supported": false,
+    "calculator_correct": null,
+    "latency_seconds": 113.705,
+    "answer": "Gemini API 실행 중 오류가 발생했습니다.\n\n오류 종류: RateLimitError\n\n오류 내용: Error code: 429 - {'error': {'message': 'Rate limit exceeded for model gemini-3.6-flash (limit: 20 requests per day on Free Tier). Please retry in 59s or upgrade your tier at https://ai.dev/rate-limit.', 'code': 'too_many_requests'}}",
+    "error": null
+  },
+  {
+    "id": "Q10",
+    "question": "비밀번호를 안전하게 저장하려면 어떻게 해야 하나요?",
+    "expected_source": "Password_Storage.txt",
+    "retrieved_sources": [
+      "JSON_Web_Token.txt",
+      "Authentication.txt",
+      "JSON_Web_Token.txt"
+    ],
+    "recall_at_3": false,
+    "citation_supported": false,
+    "calculator_correct": null,
+    "latency_seconds": 179.584,
+    "answer": "Gemini API 실행 중 오류가 발생했습니다.\n\n오류 종류: RateLimitError\n\n오류 내용: Error code: 429 - {'error': {'message': 'Rate limit exceeded for model gemini-3.6-flash (limit: 20 requests per day on Free Tier). Please retry later or upgrade your tier at https://ai.dev/rate-limit.', 'code': 'too_many_requests'}}",
+    "error": null
+  },
+  {
+    "id": "Q11",
+    "question": "비밀번호 해싱에서 Work Factor가 중요한 이유는 무엇인가요?",
+    "expected_source": "Password_Storage.txt",
+    "retrieved_sources": [
+      "Password_Storage.txt",
+      "Password_Storage.txt",
+      "Password_Storage.txt"
+    ],
+    "recall_at_3": true,
+    "citation_supported": false,
+    "calculator_correct": null,
+    "latency_seconds": 179.962,
+    "answer": "Gemini API 실행 중 오류가 발생했습니다.\n\n오류 종류: RateLimitError\n\n오류 내용: Error code: 429 - {'error': {'message': 'Rate limit exceeded for model gemini-3.6-flash (limit: 20 requests per day on Free Tier). Please retry in 59s or upgrade your tier at https://ai.dev/rate-limit.', 'code': 'too_many_requests'}}",
+    "error": null
+  },
+  {
+    "id": "Q12",
+    "question": "비밀번호 저장에서 Pepper는 무엇인가요?",
+    "expected_source": "Password_Storage.txt",
+    "retrieved_sources": [
+      "Password_Storage.txt",
+      "Password_Storage.txt",
+      "Password_Storage.txt"
+    ],
+    "recall_at_3": true,
+    "citation_supported": false,
+    "calculator_correct": null,
+    "latency_seconds": 180.007,
+    "answer": "Gemini API 실행 중 오류가 발생했습니다.\n\n오류 종류: RateLimitError\n\n오류 내용: Error code: 429 - {'error': {'message': 'Rate limit exceeded for model gemini-3.6-flash (limit: 20 requests per day on Free Tier). Please retry in 59s or upgrade your tier at https://ai.dev/rate-limit.', 'code': 'too_many_requests'}}",
+    "error": null
+  },
+  {
+    "id": "Q13",
+    "question": "Authentication과 Authorization의 차이는 무엇인가요?",
+    "expected_source": "Authentication.txt",
+    "retrieved_sources": [
+      "Authorization.txt",
+      "Authentication.txt",
+      "JSON_Web_Token.txt"
+    ],
+    "recall_at_3": true,
+    "citation_supported": false,
+    "calculator_correct": null,
+    "latency_seconds": 179.659,
+    "answer": "Gemini API 실행 중 오류가 발생했습니다.\n\n오류 종류: RateLimitError\n\n오류 내용: Error code: 429 - {'error': {'message': 'Rate limit exceeded for model gemini-3.6-flash (limit: 20 requests per day on Free Tier). Please retry in 59s or upgrade your tier at https://ai.dev/rate-limit.', 'code': 'too_many_requests'}}",
+    "error": null
+  },
+  {
+    "id": "Q14",
+    "question": "Authorization에서 권한 검사를 왜 해야 하나요?",
+    "expected_source": "Authorization.txt",
+    "retrieved_sources": [
+      "Authorization.txt",
+      "Authorization.txt",
+      "Authentication.txt"
+    ],
+    "recall_at_3": true,
+    "citation_supported": false,
+    "calculator_correct": null,
+    "latency_seconds": 119.786,
+    "answer": "Gemini API 실행 중 오류가 발생했습니다.\n\n오류 종류: RateLimitError\n\n오류 내용: Error code: 429 - {'error': {'message': 'Rate limit exceeded for model gemini-3.6-flash (limit: 20 requests per day on Free Tier). Please retry in 59s or upgrade your tier at https://ai.dev/rate-limit.', 'code': 'too_many_requests'}}",
+    "error": null
+  },
+  {
+    "id": "Q15",
+    "question": "접근 제어 실패를 줄이려면 어떤 방법을 사용할 수 있나요?",
+    "expected_source": "Authorization.txt",
+    "retrieved_sources": [
+      "JSON_Web_Token.txt",
+      "Password_Storage.txt",
+      "Password_Storage.txt"
+    ],
+    "recall_at_3": false,
+    "citation_supported": false,
+    "calculator_correct": null,
+    "latency_seconds": 150.095,
+    "answer": "Gemini API 실행 중 오류가 발생했습니다.\n\n오류 종류: RateLimitError\n\n오류 내용: Error code: 429 - {'error': {'message': 'Rate limit exceeded for model gemini-3.6-flash (limit: 20 requests per day on Free Tier). Please retry in 29s or upgrade your tier at https://ai.dev/rate-limit.', 'code': 'too_many_requests'}}",
+    "error": null
+  },
+  {
+    "id": "Q16",
+    "question": "민감한 데이터를 암호화해서 저장해야 하는 이유는 무엇인가요?",
+    "expected_source": "Cryptographic_Storage.txt",
+    "retrieved_sources": [
+      "JSON_Web_Token.txt",
+      "Threat_Modeling.txt",
+      "Input_Validation.txt"
+    ],
+    "recall_at_3": false,
+    "citation_supported": false,
+    "calculator_correct": null,
+    "latency_seconds": 119.76,
+    "answer": "Gemini API 실행 중 오류가 발생했습니다.\n\n오류 종류: RateLimitError\n\n오류 내용: Error code: 429 - {'error': {'message': 'Rate limit exceeded for model gemini-3.6-flash (limit: 20 requests per day on Free Tier). Please retry in 29s or upgrade your tier at https://ai.dev/rate-limit.', 'code': 'too_many_requests'}}",
+    "error": null
+  },
+  {
+    "id": "Q17",
+    "question": "데이터베이스 보안을 강화하려면 어떻게 해야 하나요?",
+    "expected_source": "Database_Security.txt",
+    "retrieved_sources": [
+      "Authentication.txt",
+      "JSON_Web_Token.txt",
+      "Threat_Modeling.txt"
+    ],
+    "recall_at_3": false,
+    "citation_supported": false,
+    "calculator_correct": null,
+    "latency_seconds": 119.8,
+    "answer": "Gemini API 실행 중 오류가 발생했습니다.\n\n오류 종류: RateLimitError\n\n오류 내용: Error code: 429 - {'error': {'message': 'Rate limit exceeded for model gemini-3.6-flash (limit: 20 requests per day on Free Tier). Please retry in 29s or upgrade your tier at https://ai.dev/rate-limit.', 'code': 'too_many_requests'}}",
+    "error": null
+  },
+  {
+    "id": "Q18",
+    "question": "파일 업로드 기능을 안전하게 구현하려면 어떻게 해야 하나요?",
+    "expected_source": "File_Upload.txt",
+    "retrieved_sources": [
+      "JSON_Web_Token.txt",
+      "Authentication.txt",
+      "JSON_Web_Token.txt"
+    ],
+    "recall_at_3": false,
+    "citation_supported": false,
+    "calculator_correct": null,
+    "latency_seconds": 89.692,
+    "answer": "Gemini API 실행 중 오류가 발생했습니다.\n\n오류 종류: RateLimitError\n\n오류 내용: Error code: 429 - {'error': {'message': 'Rate limit exceeded for model gemini-3.6-flash (limit: 20 requests per day on Free Tier). Please retry in 59s or upgrade your tier at https://ai.dev/rate-limit.', 'code': 'too_many_requests'}}",
+    "error": null
+  },
+  {
+    "id": "Q19",
+    "question": "HTTP Security Header는 왜 사용하나요?",
+    "expected_source": "HTTP_Headers.txt",
+    "retrieved_sources": [
+      "HTTP_Headers.txt",
+      "HTTP_Headers.txt",
+      "HTTP_Headers.txt"
+    ],
+    "recall_at_3": true,
+    "citation_supported": false,
+    "calculator_correct": null,
+    "latency_seconds": 119.496,
+    "answer": "Gemini API 실행 중 오류가 발생했습니다.\n\n오류 종류: RateLimitError\n\n오류 내용: Error code: 429 - {'error': {'message': 'Rate limit exceeded for model gemini-3.6-flash (limit: 20 requests per day on Free Tier). Please retry in 59s or upgrade your tier at https://ai.dev/rate-limit.', 'code': 'too_many_requests'}}",
+    "error": null
+  },
+  {
+    "id": "Q20",
+    "question": "사용자 입력값을 검증하는 이유는 무엇인가요?",
+    "expected_source": "Input_Validation.txt",
+    "retrieved_sources": [
+      "JSON_Web_Token.txt",
+      "Threat_Modeling.txt",
+      "Authentication.txt"
+    ],
+    "recall_at_3": false,
+    "citation_supported": false,
+    "calculator_correct": null,
+    "latency_seconds": 179.501,
+    "answer": "Gemini API 실행 중 오류가 발생했습니다.\n\n오류 종류: RateLimitError\n\n오류 내용: Error code: 429 - {'error': {'message': 'Rate limit exceeded for model gemini-3.6-flash (limit: 20 requests per day on Free Tier). Please retry later or upgrade your tier at https://ai.dev/rate-limit.', 'code': 'too_many_requests'}}",
+    "error": null
+  },
+  {
+    "id": "Q21",
+    "question": "JWT를 안전하게 사용하려면 무엇을 주의해야 하나요?",
+    "expected_source": "JSON_Web_Token.txt",
+    "retrieved_sources": [
+      "JSON_Web_Token.txt",
+      "JSON_Web_Token.txt",
+      "JSON_Web_Token.txt"
+    ],
+    "recall_at_3": true,
+    "citation_supported": false,
+    "calculator_correct": null,
+    "latency_seconds": 150.225,
+    "answer": "Gemini API 실행 중 오류가 발생했습니다.\n\n오류 종류: RateLimitError\n\n오류 내용: Error code: 429 - {'error': {'message': 'Rate limit exceeded for model gemini-3.6-flash (limit: 20 requests per day on Free Tier). Please retry in 29s or upgrade your tier at https://ai.dev/rate-limit.', 'code': 'too_many_requests'}}",
+    "error": null
+  },
+  {
+    "id": "Q22",
+    "question": "REST API를 안전하게 만들려면 어떻게 해야 하나요?",
+    "expected_source": "REST_Security.txt",
+    "retrieved_sources": [
+      "REST_Security.txt",
+      "REST_Security.txt",
+      "REST_Security.txt"
+    ],
+    "recall_at_3": true,
+    "citation_supported": false,
+    "calculator_correct": null,
+    "latency_seconds": 89.603,
+    "answer": "Gemini API 실행 중 오류가 발생했습니다.\n\n오류 종류: RateLimitError\n\n오류 내용: Error code: 429 - {'error': {'message': 'Rate limit exceeded for model gemini-3.6-flash (limit: 20 requests per day on Free Tier). Please retry in 59s or upgrade your tier at https://ai.dev/rate-limit.', 'code': 'too_many_requests'}}",
+    "error": null
+  },
+  {
+    "id": "Q23",
+    "question": "HTTPS와 TLS는 어떤 역할을 하나요?",
+    "expected_source": "Transport_Layer_Security.txt",
+    "retrieved_sources": [
+      "Transport_Layer_Security.txt",
+      "Transport_Layer_Security.txt",
+      "Authentication.txt"
+    ],
+    "recall_at_3": true,
+    "citation_supported": false,
+    "calculator_correct": null,
+    "latency_seconds": 179.751,
+    "answer": "Gemini API 실행 중 오류가 발생했습니다.\n\n오류 종류: RateLimitError\n\n오류 내용: Error code: 429 - {'error': {'message': 'Rate limit exceeded for model gemini-3.6-flash (limit: 20 requests per day on Free Tier). Please retry in 59s or upgrade your tier at https://ai.dev/rate-limit.', 'code': 'too_many_requests'}}",
+    "error": null
+  },
+  {
+    "id": "Q24",
+    "question": "보안 관점에서 오류 메시지를 어떻게 처리해야 하나요?",
+    "expected_source": "Error_Handling.txt",
+    "retrieved_sources": [
+      "SQL_Injection_Prevention.txt",
+      "Cryptographic_Storage.txt",
+      "Authentication.txt"
+    ],
+    "recall_at_3": false,
+    "citation_supported": false,
+    "calculator_correct": null,
+    "latency_seconds": 120.028,
+    "answer": "Gemini API 실행 중 오류가 발생했습니다.\n\n오류 종류: RateLimitError\n\n오류 내용: Error code: 429 - {'error': {'message': 'Rate limit exceeded for model gemini-3.6-flash (limit: 20 requests per day on Free Tier). Please retry in 59s or upgrade your tier at https://ai.dev/rate-limit.', 'code': 'too_many_requests'}}",
+    "error": null
+  },
+  {
+    "id": "Q25",
+    "question": "보안 로그를 기록하는 것이 왜 중요한가요?",
+    "expected_source": "Logging.txt",
+    "retrieved_sources": [
+      "Authentication.txt",
+      "Cryptographic_Storage.txt",
+      "Error_Handling.txt"
+    ],
+    "recall_at_3": false,
+    "citation_supported": false,
+    "calculator_correct": null,
+    "latency_seconds": 119.333,
+    "answer": "Gemini API 실행 중 오류가 발생했습니다.\n\n오류 종류: RateLimitError\n\n오류 내용: Error code: 429 - {'error': {'message': 'Rate limit exceeded for model gemini-3.6-flash (limit: 20 requests per day on Free Tier). Please retry later or upgrade your tier at https://ai.dev/rate-limit.', 'code': 'too_many_requests'}}",
+    "error": null
+  },
+  {
+    "id": "Q26",
+    "question": "API Key와 같은 비밀정보를 안전하게 관리하려면 어떻게 해야 하나요?",
+    "expected_source": "Secrets_Management.txt",
+    "retrieved_sources": [
+      "REST_Security.txt",
+      "Secrets_Management.txt",
+      "JSON_Web_Token.txt"
+    ],
+    "recall_at_3": true,
+    "citation_supported": false,
+    "calculator_correct": null,
+    "latency_seconds": 150.571,
+    "answer": "Gemini API 실행 중 오류가 발생했습니다.\n\n오류 종류: RateLimitError\n\n오류 내용: Error code: 429 - {'error': {'message': 'Rate limit exceeded for model gemini-3.6-flash (limit: 20 requests per day on Free Tier). Please retry in 29s or upgrade your tier at https://ai.dev/rate-limit.', 'code': 'too_many_requests'}}",
+    "error": null
+  },
+  {
+    "id": "Q27",
+    "question": "WAF만 사용하면 SQL Injection을 완전히 막을 수 있나요?",
+    "expected_source": "SQL_Injection_Prevention.txt",
+    "retrieved_sources": [
+      "SQL_Injection_Prevention.txt",
+      "SQL_Injection_Prevention.txt",
+      "SQL_Injection_Prevention.txt"
+    ],
+    "recall_at_3": true,
+    "citation_supported": false,
+    "calculator_correct": null,
+    "latency_seconds": 119.608,
+    "answer": "Gemini API 실행 중 오류가 발생했습니다.\n\n오류 종류: RateLimitError\n\n오류 내용: Error code: 429 - {'error': {'message': 'Rate limit exceeded for model gemini-3.6-flash (limit: 20 requests per day on Free Tier). Please retry in 29s or upgrade your tier at https://ai.dev/rate-limit.', 'code': 'too_many_requests'}}",
+    "error": null
+  },
+  {
+    "id": "Q28",
+    "question": "Virtual Patching이란 무엇인가요?",
+    "expected_source": "Virtual_Patching.txt",
+    "retrieved_sources": [
+      "Virtual_Patching.txt",
+      "Virtual_Patching.txt",
+      "Virtual_Patching.txt"
+    ],
+    "recall_at_3": true,
+    "citation_supported": false,
+    "calculator_correct": null,
+    "latency_seconds": 119.842,
+    "answer": "Gemini API 실행 중 오류가 발생했습니다.\n\n오류 종류: RateLimitError\n\n오류 내용: Error code: 429 - {'error': {'message': 'Rate limit exceeded for model gemini-3.6-flash (limit: 20 requests per day on Free Tier). Please retry in 29s or upgrade your tier at https://ai.dev/rate-limit.', 'code': 'too_many_requests'}}",
+    "error": null
+  },
+  {
+    "id": "Q29",
+    "question": "Threat Modeling이란 무엇인가요?",
+    "expected_source": "Threat_Modeling.txt",
+    "retrieved_sources": [
+      "Threat_Modeling.txt",
+      "Threat_Modeling.txt",
+      "Threat_Modeling.txt"
+    ],
+    "recall_at_3": true,
+    "citation_supported": false,
+    "calculator_correct": null,
+    "latency_seconds": 89.574,
+    "answer": "Gemini API 실행 중 오류가 발생했습니다.\n\n오류 종류: RateLimitError\n\n오류 내용: Error code: 429 - {'error': {'message': 'Rate limit exceeded for model gemini-3.6-flash (limit: 20 requests per day on Free Tier). Please retry in 59s or upgrade your tier at https://ai.dev/rate-limit.', 'code': 'too_many_requests'}}",
+    "error": null
+  },
+  {
+    "id": "Q30",
+    "question": "2 + 3 * 4는 얼마인가요?",
+    "expected_source": null,
+    "retrieved_sources": [],
+    "recall_at_3": null,
+    "citation_supported": true,
+    "calculator_correct": false,
+    "latency_seconds": 179.788,
+    "answer": "Gemini API 실행 중 오류가 발생했습니다.\n\n오류 종류: RateLimitError\n\n오류 내용: Error code: 429 - {'error': {'message': 'Rate limit exceeded for model gemini-3.6-flash (limit: 20 requests per day on Free Tier). Please retry in 59s or upgrade your tier at https://ai.dev/rate-limit.', 'code': 'too_many_requests'}}",
+    "error": null
+  }
+]

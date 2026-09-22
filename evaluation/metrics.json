@@ -1,0 +1,12 @@
+{
+  "evaluation_date": "2026-09-22T08:14:00.011834",
+  "total_questions": 30,
+  "rag_questions": 29,
+  "recall_at_3": 0.7241,
+  "citation_supported_rate": 0.069,
+  "average_latency_seconds": 133.374,
+  "minimum_latency_seconds": 13.882,
+  "maximum_latency_seconds": 180.007,
+  "calculator_accuracy": 0.0,
+  "faithfulness_note": "현재 평가는 답변에 기대 문서 출처가 포함되었는지를 확인하는 citation-supported proxy를 사용한다. 의미 기반 faithfulness 평가는 별도 단계에서 추가한다."
+}

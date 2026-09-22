@@ -1,11 +1,7 @@
 import os
+import re
 from dotenv import load_dotenv
 from google import genai
-
-
-# ============================================================
-# 1. 환경 설정
-# ============================================================
 
 PROJECT_ROOT = os.path.dirname(
     os.path.dirname(
@@ -25,19 +21,13 @@ if not GEMINI_API_KEY:
     )
 
 
-# Gemini 클라이언트
 client = genai.Client(
     api_key=GEMINI_API_KEY
 )
 
 
-# 현재 사용할 모델
 MODEL_NAME = "gemini-3.6-flash"
 
-
-# ============================================================
-# 2. OWASP 문서 검색
-# ============================================================
 
 def search_security_docs(query):
 
@@ -97,10 +87,6 @@ def search_security_docs(query):
         )
 
 
-# ============================================================
-# 3. 계산기
-# ============================================================
-
 def calculator(expression):
 
     allowed_chars = "0123456789+-*/(). "
@@ -126,9 +112,27 @@ def calculator(expression):
         return "계산할 수 없는 식입니다."
 
 
-# ============================================================
-# 4. 보안 문서 검색 필요 여부 판단
-# ============================================================
+def extract_calculation_expression(user_query):
+    pattern = (
+        r'^\s*'
+        r'([0-9+\-*/().\s]+?)'
+        r'\s*(?:는|은|=)?\s*'
+        r'(?:얼마인가요|얼마야|계산해줘|계산해 주세요)?'
+        r'\s*[?？]?\s*$'
+    )
+
+    match = re.match(pattern, user_query)
+
+    if match:
+        expression = match.group(1).strip()
+
+        if expression and any(
+            operator in expression
+            for operator in ["+", "-", "*", "/"]
+        ):
+            return expression
+
+    return None
 
 def needs_security_search(user_query):
 
@@ -157,10 +161,6 @@ def needs_security_search(user_query):
 
     return False
 
-
-# ============================================================
-# 5. Gemini 답변 생성
-# ============================================================
 
 def generate_answer(
     user_query,
@@ -221,22 +221,28 @@ def generate_answer(
     return interaction.output_text
 
 
-# ============================================================
-# 6. Agent 실행
-# ============================================================
-
 def run_agent(user_query):
-
     print()
     print("=" * 60)
     print("사용자:", user_query)
     print("=" * 60)
 
+    calculation_expression = extract_calculation_expression(
+        user_query
+    )
+
+    if calculation_expression:
+        print()
+        print("[Calculator 실행]")
+        print("계산식:", calculation_expression)
+
+        return calculator(
+            calculation_expression
+        )
+
     security_context = ""
 
-    # 보안 질문이면 OWASP RAG 실행
     if needs_security_search(user_query):
-
         security_context = search_security_docs(
             user_query
         )
@@ -245,16 +251,34 @@ def run_agent(user_query):
     print("[Gemini 답변 생성 중...]")
 
     try:
-
         answer = generate_answer(
             user_query,
             security_context
         )
 
+        if security_context:
+            sources = re.findall(
+                r"\[출처:\s*([^\]]+)\]",
+                security_context
+            )
+
+            unique_sources = []
+
+            for source in sources:
+                if source not in unique_sources:
+                    unique_sources.append(source)
+
+            if unique_sources:
+                answer = (
+                    answer.rstrip()
+                    + "\n\n"
+                    + "참고 문서: "
+                    + ", ".join(unique_sources)
+                )
+
         return answer
 
     except Exception as e:
-
         return (
             "Gemini API 실행 중 오류가 발생했습니다.\n\n"
             "오류 종류: "
@@ -264,10 +288,6 @@ def run_agent(user_query):
             + str(e)
         )
 
-
-# ============================================================
-# 7. 테스트
-# ============================================================
 
 if __name__ == "__main__":
 
